@@ -5,6 +5,7 @@ import net.omaima.backend.dtos.AccountHistoryDTO;
 import net.omaima.backend.dtos.AccountOperationDTO;
 import net.omaima.backend.dtos.BankAccountDTO;
 import net.omaima.backend.entities.BankAccount;
+import net.omaima.backend.exceptions.BalanceNotSufficientException;
 import net.omaima.backend.exceptions.BankAccountNotFoundException;
 import net.omaima.backend.services.BankAccountService;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,33 @@ public class BankAccountRestController {
 
         return bankAccountService.getAccountHistory(accountId, page, size);
     }
+
+    @PostMapping("/accounts/{accountId}/credit")
+    public void credit(
+            @PathVariable String accountId,
+            @RequestParam(name = "amount", defaultValue = "0") double amount,
+            @RequestParam(name= "description" , defaultValue = "") String description) throws BankAccountNotFoundException {
+        bankAccountService.credit(accountId, amount, description);
+    }
+
+    @PostMapping("/accounts/{accountId}/debit")
+    public void debit(
+            @PathVariable String accountId,
+            @RequestParam(name = "amount", defaultValue = "0") double amount,
+            @RequestParam(name= "description" , defaultValue = "") String description) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        bankAccountService.debit(accountId, amount, description);
+    }
+
+    @PostMapping("/accounts/{accountIdSource}/transfer")
+    public void transfer(
+            @PathVariable String accountIdSource,
+            @RequestParam String accountIdDestination,
+            @RequestParam double amount) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        bankAccountService.transfer(accountIdSource, accountIdDestination, amount);
+    }
+
+
+
 
 
 
