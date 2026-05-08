@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import {CommonModule} from '@angular/common';
-
+import {Customer} from '../services/customer';
 
 @Component({
   selector: 'app-customers',
@@ -13,13 +12,16 @@ import {CommonModule} from '@angular/common';
 })
 export class Customers implements OnInit {
   customers : any;
-  constructor(private http: HttpClient) { }
+  constructor(private customerService: Customer) { }
 
   ngOnInit(): void {
-    this.http.get('http://localhost:8085/customers').subscribe(data => {
-      this.customers = data;
-    }, error => {
-      console.error('Error fetching customers:', error);
-    })
+    this.customerService.getCustomers(). subscribe({
+      next: (data) => {
+        this.customers = data;
+      },
+      error: (error) => {
+        console.error('Error fetching customers:', error);
+      }
+    });
   }
 }
