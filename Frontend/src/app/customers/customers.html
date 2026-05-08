@@ -1,0 +1,33 @@
+<div class="container mx-auto mt-2 px-4">
+  <div
+  class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
+  *ngIf="customers">
+ 
+    <div class="border-b border-gray-200 bg-gray-50 px-4 py-3 font-semibold text-gray-700">
+      Customers
+    </div>
+
+    <div class="p-4">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-left text-sm">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 font-medium text-gray-900">ID</th>
+              <th class="px-4 py-2 font-medium text-gray-900">Name</th>
+              <th class="px-4 py-2 font-medium text-gray-900">Email</th> </tr>
+          </thead>
+
+          <tbody class="divide-y divide-gray-200">
+            <tr *ngFor="let c of customers">
+              <td>{{c.id}}</td>
+              <td>{{c.name}}</td>
+              <td>{{c.email}}</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
