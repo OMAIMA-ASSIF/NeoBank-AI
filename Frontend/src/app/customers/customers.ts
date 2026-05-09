@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { Customer } from '../model/customer.model';
 import { catchError } from 'rxjs/operators';
 import { Form, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customers',
@@ -41,5 +42,24 @@ export class Customers implements OnInit {
         this.errorMessage = err.message;
         return throwError(err);
       })
-    );  }
+    );
+  }
+
+  handleDeleteCustomer(c: Customer) {
+    this.customerService.deleteCustomer(c.id ).subscribe({
+      next : (resp) => {
+        this.customers = this.customers.pipe(
+          map(data => {
+            let index = data.indexOf(c);
+            data.slice(index, 1)
+            return data;
+          })
+        );
+      },
+      error : (err) => {
+        console.log(err);
+         alert("An error has occured while deleting customer !");
+      }
+    })
+  }
 }
