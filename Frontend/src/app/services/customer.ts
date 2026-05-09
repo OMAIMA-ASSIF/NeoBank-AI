@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Customer } from '../model/customer.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root', // This makes the service available throughout the application car il est disponible dans la root d app
 })
-export class Customer {
+export class CustomerService {
   constructor(private http: HttpClient) { }
 
-  public getCustomers() : Observable<any> {
-    return this.http.get('http://localhost:8085/customers');
+  public getCustomers() : Observable<Array<Customer>> {
+    return this.http.get<Array<Customer>>(environment.backendHost+'/customers');
+  }
+
+  public searchCustomers(keyword: string) : Observable<Array<Customer>> {
+    return this.http.get<Array<Customer>>(environment.backendHost+'/customers/search?keyword='+keyword);
   }
 }

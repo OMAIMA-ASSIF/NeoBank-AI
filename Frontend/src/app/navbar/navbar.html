@@ -16,26 +16,26 @@
       <!-- Desktop Navigation + Search -->
       <div class="hidden md:flex items-center space-x-8">
         <a href="#" class="text-gray-700 hover:text-blue-600 transition duration-300 font-medium">Home</a>
-        <a routerLink="/customers" class="text-gray-700 hover:text-blue-600 transition duration-300 font-medium cursor-pointer">Customers</a>
-        <a routerLink="/accounts" class="text-gray-700 hover:text-blue-600 transition duration-300 font-medium cursor-pointer">Accounts</a>
 
 
         <!-- Dropdown pour Customers -->
         <div class="relative group">
           <button class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition duration-300 font-medium focus:outline-none">
-            <span>Accounts</span>
+            <span>Customers</span>
             <svg class="w-4 h-4 ml-1 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 border border-gray-100">
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Accounts</a>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Add New</a>
+            <a routerLink="/customers" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Search customers</a>
+            <a routerLink="/add-customer" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">New customer</a>
             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Statistics</a>
             <hr class="my-1 border-gray-100">
             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Settings</a>
           </div>
         </div>
+        <a routerLink="/accounts" class="text-gray-700 hover:text-blue-600 transition duration-300 font-medium cursor-pointer">Accounts</a>
+
 
       </div>
 
