@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Form, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomerService } from '../services/customer';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-customer',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule ],
   templateUrl: './new-customer.html',
   styleUrl: './new-customer.css',
 })
 export class NewCustomer implements OnInit{
   newCustomerFormGroup! : FormGroup;
-  constructor(private fb : FormBuilder, private customerService : CustomerService){}
+  constructor(private fb : FormBuilder, private customerService : CustomerService, private router : Router){}
 
   ngOnInit() : void {
     this.newCustomerFormGroup = this.fb.group({
@@ -24,6 +26,8 @@ export class NewCustomer implements OnInit{
     this.customerService.saveCustomer(customer).subscribe({
       next : (data) => {
         alert("Customer has been saved successfully !");
+        //this.newCustomerFormGroup.reset();
+        this.router.navigateByUrl("/customers");
       },
       error : (err) => {
         console.log(err);
