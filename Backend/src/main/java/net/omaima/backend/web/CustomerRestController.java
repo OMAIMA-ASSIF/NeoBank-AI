@@ -22,7 +22,7 @@ public class CustomerRestController {
     public List<CustomerDTO> customers(){
         return bankAccountService.listCustomers();
     }
-    @GetMapping("/customers/keyword")
+    @GetMapping("/customers/search")
     public List<CustomerDTO> searchCustomers(@RequestParam(name = "keyword", defaultValue = "") String keyword){
         return bankAccountService.searchCustomers("%"+keyword+"%");
     }

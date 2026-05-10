@@ -1,9 +1,7 @@
 package net.omaima.backend.web;
 
 import lombok.AllArgsConstructor;
-import net.omaima.backend.dtos.AccountHistoryDTO;
-import net.omaima.backend.dtos.AccountOperationDTO;
-import net.omaima.backend.dtos.BankAccountDTO;
+import net.omaima.backend.dtos.*;
 import net.omaima.backend.entities.BankAccount;
 import net.omaima.backend.exceptions.BalanceNotSufficientException;
 import net.omaima.backend.exceptions.BankAccountNotFoundException;
@@ -42,28 +40,24 @@ public class BankAccountRestController {
         return bankAccountService.getAccountHistory(accountId, page, size);
     }
 
-    @PostMapping("/accounts/{accountId}/credit")
-    public void credit(
-            @PathVariable String accountId,
-            @RequestParam(name = "amount", defaultValue = "0") double amount,
-            @RequestParam(name= "description" , defaultValue = "") String description) throws BankAccountNotFoundException {
-        bankAccountService.credit(accountId, amount, description);
+    @PostMapping("/accounts/credit")
+    public CreditDTO credit(@RequestBody CreditDTO creditDTO) throws BankAccountNotFoundException {
+        bankAccountService.credit(creditDTO.getId(), creditDTO.getAmount(), creditDTO.getDescription());
+        return creditDTO;
     }
 
-    @PostMapping("/accounts/{accountId}/debit")
-    public void debit(
-            @PathVariable String accountId,
-            @RequestParam(name = "amount", defaultValue = "0") double amount,
-            @RequestParam(name= "description" , defaultValue = "") String description) throws BankAccountNotFoundException, BalanceNotSufficientException {
-        bankAccountService.debit(accountId, amount, description);
+    @PostMapping("/accounts/debit")
+    public DebitDTO debit(@RequestBody DebitDTO debitDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        this.bankAccountService.debit(debitDTO.getId(), debitDTO.getAmount(), debitDTO.getDescription());
+        return debitDTO;
     }
 
-    @PostMapping("/accounts/{accountIdSource}/transfer")
-    public void transfer(
-            @PathVariable String accountIdSource,
-            @RequestParam String accountIdDestination,
-            @RequestParam double amount) throws BankAccountNotFoundException, BalanceNotSufficientException {
-        bankAccountService.transfer(accountIdSource, accountIdDestination, amount);
+    @PostMapping("/accounts/transfer")
+    public void transfer(@RequestBody TransferDTO transferRequestDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        this.bankAccountService.transfer(
+                transferRequestDTO.getAccountSource(),
+                transferRequestDTO.getAccountDestination(),
+                transferRequestDTO.getAmount());
     }
 
 
