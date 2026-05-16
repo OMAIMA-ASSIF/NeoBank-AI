@@ -1,6 +1,7 @@
 package net.omaima.backend.dtos;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import net.omaima.backend.enums.AccountStatus;
 
@@ -12,6 +13,7 @@ public class CurrentBankAccountDTO extends BankAccountDTO{
     private double balance;
     private Date createdAt;
     private AccountStatus status;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private CustomerDTO customerDTO;
     private double overDraft;
 

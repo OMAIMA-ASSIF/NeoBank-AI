@@ -1,0 +1,78 @@
+<div class="container mx-auto mt-4 px-4">
+  <!-- Header with back button -->
+  <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+    <h1 class="text-2xl font-bold text-gray-800">
+      Bank Accounts of {{ customer?.name }}
+      <span class="text-sm font-normal text-gray-500">(ID: {{ customerId }})</span>
+    </h1>
+    <button (click)="goBack()"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 text-blue-700 hover:bg-indigo-100 font-semibold rounded-2xl border border-indigo-200 transition-all cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        <span>Back</span>
+      </button>
+  </div>
+
+  <!-- Error handling -->
+  <div *ngIf="errorMessage" class="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Display accounts with async pipe -->
+  <ng-container *ngIf="accounts$ | async as accounts; else loadingOrError">
+    <div *ngIf="accounts.length > 0; else noAccounts"
+         class="overflow-x-auto shadow-md border border-gray-200 rounded-lg">
+      <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left font-semibold text-gray-900">Account ID</th>
+            <th class="px-6 py-3 text-left font-semibold text-gray-900">Type</th>
+            <th class="px-6 py-3 text-right font-semibold text-gray-900">Balance (€)</th>
+            <th class="px-6 py-3 text-left font-semibold text-gray-900">Created At</th>
+            <th class="px-6 py-3 text-left font-semibold text-gray-900">Status</th>
+            <th class="px-6 py-3 text-left font-semibold text-gray-900">Specifics</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          <tr *ngFor="let acc of accounts" class="hover:bg-gray-50">
+            <td class="px-6 py-4 font-mono text-xs">{{ acc.id }}</td>
+            <td class="px-6 py-4">
+              <span [class]="acc.type === 'CurrentAccount' ? 'text-blue-600 font-medium' : 'text-green-600 font-medium'">
+                {{ acc.type === 'CurrentAccount' ? 'Current Account' : 'Saving Account' }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right font-bold text-gray-900">{{ acc.balance | number:'1.2-2' }}</td>
+            <td class="px-6 py-4">{{ acc.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td class="px-6 py-4">
+              <span *ngIf="acc.status" class="px-2 py-1 bg-gray-100 rounded-full text-xs">
+                {{ acc.status }}
+              </span>
+              <span *ngIf="!acc.status" class="text-gray-400">—</span>
+            </td>
+            <td class="px-6 py-4">
+              <span *ngIf="acc.type === 'CurrentAccount' && acc.overDraft !== undefined">
+                Overdraft: {{ acc.overDraft | number:'1.2-2' }} €
+              </span>
+              <span *ngIf="acc.type === 'SavingAccount' && acc.interestRate !== undefined">
+                Interest Rate: {{ acc.interestRate }}%
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noAccounts>
+      <div class="bg-yellow-100 text-yellow-800 p-4 rounded-lg text-center">
+        This customer has no bank accounts.
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #loadingOrError>
+    <div *ngIf="!errorMessage" class="text-center text-gray-500 py-8">
+      Loading accounts...
+    </div>
+  </ng-template>
+</div>

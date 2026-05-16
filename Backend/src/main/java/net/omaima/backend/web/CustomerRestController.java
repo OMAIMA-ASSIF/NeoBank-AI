@@ -3,6 +3,7 @@ package net.omaima.backend.web;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.omaima.backend.dtos.BankAccountDTO;
 import net.omaima.backend.dtos.CustomerDTO;
 import net.omaima.backend.entities.Customer;
 import net.omaima.backend.exceptions.CustomerNotFoundException;
@@ -47,4 +48,11 @@ public class CustomerRestController {
     public void deleteCustomer(@PathVariable Long id) {
         bankAccountService.deleteCustomer(id);
     }
+
+
+    @GetMapping("/customers/{customerId}/accounts")
+    public List<BankAccountDTO> customerBankAccounts(@PathVariable Long customerId) {
+        return bankAccountService.customerBankAccounts(customerId);
+    }
+
 }

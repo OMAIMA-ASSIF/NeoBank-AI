@@ -1,13 +1,7 @@
 package net.omaima.backend.mappers;
 
-import net.omaima.backend.dtos.AccountOperationDTO;
-import net.omaima.backend.dtos.CurrentBankAccountDTO;
-import net.omaima.backend.dtos.CustomerDTO;
-import net.omaima.backend.dtos.SavingBankAccountDTO;
-import net.omaima.backend.entities.AccountOperation;
-import net.omaima.backend.entities.CurrentAccount;
-import net.omaima.backend.entities.Customer;
-import net.omaima.backend.entities.SavingAccount;
+import net.omaima.backend.dtos.*;
+import net.omaima.backend.entities.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -61,4 +55,33 @@ public class BankAccountMapperImpl {
         BeanUtils.copyProperties(accountOperation , accountOperationDTO);
         return accountOperationDTO;
     }
+
+    public BankAccountDTO fromBankAccount(BankAccount bankAccount){
+        if (bankAccount instanceof CurrentAccount) {
+            return fromCurrentBankAccount((CurrentAccount) bankAccount);
+        } else
+            return fromSavingBankAccount((SavingAccount) bankAccount);
+    }
+
+    public CurrentBankAccountDTO fromCurrentBankAccountWithoutCustomer(CurrentAccount currentAccount){
+        CurrentBankAccountDTO currentBankAccountDTO = new CurrentBankAccountDTO();
+        BeanUtils.copyProperties(currentAccount, currentBankAccountDTO);
+        currentBankAccountDTO.setType(currentAccount.getClass().getSimpleName());
+        return currentBankAccountDTO;
+    }
+
+    public SavingBankAccountDTO fromSavingBankAccountWithoutCustomer(SavingAccount savingAccount){
+        SavingBankAccountDTO savingBankAccountDTO = new SavingBankAccountDTO();
+        BeanUtils.copyProperties(savingAccount, savingBankAccountDTO);
+        savingBankAccountDTO.setType(savingAccount.getClass().getSimpleName());
+        return savingBankAccountDTO;
+    }
+
+    public BankAccountDTO fromBankAccountWithoutCustomer(BankAccount bankAccount){
+        if (bankAccount instanceof CurrentAccount) {
+            return fromCurrentBankAccountWithoutCustomer((CurrentAccount) bankAccount);
+        } else
+            return fromSavingBankAccountWithoutCustomer((SavingAccount) bankAccount);
+    }
+
 }

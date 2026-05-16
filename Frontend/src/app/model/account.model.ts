@@ -15,3 +15,13 @@ export interface accountOperationDTOList{
   type: string;
   description: string
 }
+
+export interface Account {
+  type : string;
+  id: string;
+  balance : number;
+  createdAt : string;
+  status : string;
+  overDraft?: number; // pour CurrentAccount
+  interestRate?: number; // pour SavingAccount
+}

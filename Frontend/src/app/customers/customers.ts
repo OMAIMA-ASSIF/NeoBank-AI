@@ -6,6 +6,7 @@ import { Customer } from '../model/customer.model';
 import { catchError } from 'rxjs/operators';
 import { Form, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customers',
@@ -20,7 +21,7 @@ export class Customers implements OnInit {
   errorMessage! : string;
   searchFormGroup! : FormGroup
 
-  constructor(private customerService: CustomerService, private fb : FormBuilder) { }
+  constructor(private customerService: CustomerService, private fb : FormBuilder , private router : Router) { }
 
   ngOnInit(): void {
     this.searchFormGroup = this.fb.group({
@@ -64,5 +65,9 @@ export class Customers implements OnInit {
          alert("An error has occured while deleting customer !");
       }
     })
+  }
+
+  handleCustomerAccounts(customer: Customer) {
+    this.router.navigateByUrl("/customer-accounts/"+customer.id,{state :customer});
   }
 }

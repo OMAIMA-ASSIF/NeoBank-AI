@@ -214,5 +214,11 @@ public class BankAccountServiceImpl implements BankAccountService {
         return customerDTOS;
     }
 
+    @Override
+    public List<BankAccountDTO> customerBankAccounts(Long customerId) {
+        List<BankAccount> accounts = bankAccountRepository.findByCustomerId(customerId);
+        List<BankAccountDTO> accountDTOS = accounts.stream().map(acc -> dtoMapper.fromBankAccountWithoutCustomer(acc)).collect(Collectors.toList());
+        return accountDTOS;
+    }
 
 }
