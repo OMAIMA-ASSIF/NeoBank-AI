@@ -25,9 +25,13 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -54,7 +58,8 @@ public class SecurityConfig {
         return httpSecurity
                 .sessionManagement(sm->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf->csrf.disable())
-                .authorizeHttpRequests(ar->ar.requestMatchers("/auth/login/**").permitAll())
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(ar->ar.requestMatchers("/auth/**").permitAll())
                 .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
                 //.httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(oa-> oa.jwt(Customizer.withDefaults()))
@@ -81,4 +86,17 @@ public class SecurityConfig {
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return new ProviderManager(Arrays.asList(daoAuthenticationProvider));
     }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration corsConfiguration=new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedMethod("*");
+        //corsConfiguration.addAllowedHeader("*"); on a pas des headers particuliers qui contiennent une valeur
+        corsConfiguration.setExposedHeaders(List.of("x-auth-token"));
+        UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",corsConfiguration);
+        return source;
+    }
+
 }
