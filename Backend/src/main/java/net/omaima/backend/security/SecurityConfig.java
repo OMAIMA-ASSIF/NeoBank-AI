@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .sessionManagement(sm->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf->csrf.disable())
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(ar->ar.requestMatchers("/auth/**").permitAll())
+                .authorizeHttpRequests(ar->ar.requestMatchers("/auth/login/**").permitAll())
                 .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
                 //.httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(oa-> oa.jwt(Customizer.withDefaults()))
@@ -92,8 +92,8 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration=new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedMethod("*");
-        //corsConfiguration.addAllowedHeader("*"); on a pas des headers particuliers qui contiennent une valeur
-        corsConfiguration.setExposedHeaders(List.of("x-auth-token"));
+        corsConfiguration.addAllowedHeader("*"); //on a pas des headers particuliers qui contiennent une valeur
+        ///corsConfiguration.setExposedHeaders(List.of("x-auth-token"));
         UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",corsConfiguration);
         return source;

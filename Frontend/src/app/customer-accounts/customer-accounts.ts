@@ -18,7 +18,7 @@ import { Account, AccountDetails } from '../model/account.model';
 export class CustomerAccounts implements OnInit {
   accounts$!: Observable<Account[]>;
   errorMessage!: string;
-  customer!: Customer;         // client passé via l'état de navigation
+  customer: Customer | undefined;         // client passé via l'état de navigation
   customerId!: number;
 
   constructor(
@@ -46,6 +46,6 @@ export class CustomerAccounts implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/customers']); // retour à la liste des clients
+    this.router.navigate(['admin/customers']); // retour à la liste des clients
   }
 }
