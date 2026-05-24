@@ -97,7 +97,7 @@
         <div class="border-b border-gray-200 bg-gray-50 px-4 py-3 font-semibold text-gray-700">
           Operations
         </div>
-        <div class="p-4">
+        <div *ngIf="authService.roles.includes('ADMIN')" class="p-4">
           <form [formGroup]="operationFormGroup" (ngSubmit)="handleAccountOperation()">
             <div class="flex space-x-4 mb-4">
               <label class="inline-flex items-center">

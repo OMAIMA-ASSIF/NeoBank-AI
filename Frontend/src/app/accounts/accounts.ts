@@ -6,6 +6,7 @@ import { AccountDetails } from '../model/account.model';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import de from '@angular/common/locales/de';
+import { AuthService } from '../services/auth-service';
 
 @Component({
   selector: 'app-accounts',
@@ -23,7 +24,7 @@ export class Accounts implements OnInit{
   operationFormGroup! : FormGroup;
   errorMessage! : string;
 
-  constructor(private fb : FormBuilder, private accountService : AccountService) {}
+  constructor(private fb : FormBuilder, private accountService : AccountService, public authService : AuthService) {}
   ngOnInit(): void {
     this.accountFormGroup = this.fb.group({
       accountId : this.fb.control(''),
