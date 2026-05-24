@@ -33,4 +33,11 @@ export class AuthService {
     this.username = decodedJwt.sub;
 
   }
+
+  public logout(){
+    this.isAuthenticated = false;
+    this.roles = undefined;
+    this.username = undefined;
+    this.accessToken = "";
+  }
 }
