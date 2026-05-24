@@ -21,6 +21,5 @@ export class Navbar implements OnInit {
 
   handleLogout() {
     this.authService.logout();
-    this.router.navigateByUrl("/login");
   }
 }
